@@ -10,7 +10,7 @@ st.title('Data Types:')
 st.subheader('1. Agronomic')
 col1, col2 = st.columns(2)
 with col1:
-    st.image('Supp/CornHarvest.png', caption = 'Hand corn harvest (PBS Wisconsin)')
+    st.image(r'Supp/CornHarvest.PNG', caption = 'Hand corn harvest (PBS Wisconsin)')
 
 with col2:
     st.markdown("KernelDryWt_PerPlant -  Avg grams of grain per plant")
