@@ -10,7 +10,7 @@ st.title('Data Types and Description:')
 st.subheader('1. Agronomic')
 col1, col2 = st.columns(2)
 with col1:
-    st.image(r'Supp/CornHarvest.PNG', caption = 'Hand corn harvest (PBS Wisconsin)')
+    st.image('Supp/CornHarvest.PNG', caption = 'Hand corn harvest (PBS Wisconsin)')
 
 with col2:
     st.markdown('Agronomic traits were collected by hand. They include some of the most important trait that a plant breeding might consider:')
