@@ -34,11 +34,12 @@ for df in dfs:
 # Merge
 df_gasex = pd.merge(df_meta, df_gasex, on=['PLOT_YEAR', 'PLOT', 'YEAR'], how='inner')
 
+st.subheader('Gas Exchange Data:')
+st.markdown('Gas Exchange is collected twice per plot so we will take average on the plot level.')
 # Visualize missing data
-st.header("Missing Data Before Aggregation")
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.heatmap(df_gasex.isna(), cmap="magma", ax=ax)
-plt.title('Missing Before Aggregate')
+plt.title("Missing Data Before Mean Aggregation")
 st.pyplot(fig)
 
 # Aggregation and merging
@@ -46,32 +47,30 @@ cols = list(df_gasex.columns[9:]) + ['PLOT_YEAR']
 df_gasex_g = df_gasex[cols].groupby(by='PLOT_YEAR').mean().reset_index()
 df_gasex_g = pd.merge(df_meta, df_gasex_g, on='PLOT_YEAR', how='inner')
 
-st.header("Missing Data After Aggregation")
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.heatmap(df_gasex_g.isna(), cmap="magma", ax=ax)
 plt.title('Missing After Aggregate')
 st.pyplot(fig)
 
 # Imputation
+st.subheader('Missing Meta Data')
+st.markdown('Meta data from one year was not listed but we can use the fwd fill method to fill in missing entries with similar ones.')
 df_gasex_g.sort_values(by='YEAR', inplace=True)
 df_gasex_g['SUBPOPULATION'] = df_gasex_g.groupby('GENOTYPE')['SUBPOPULATION'].transform(
     lambda x: x.fillna(method='ffill').fillna(method='bfill'))
 
-st.header("Missing Data After Imputation")
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.heatmap(df_gasex_g.isna(), cmap="magma", ax=ax)
 plt.title('Missing After Fill')
 st.pyplot(fig)
 
+
 # keys for merging
 keys = ['PLOT_YEAR', 'PLOT', 'YEAR']
-
 # merge agronomic traits of interest with gas ex
-cols2keep = ['KERNELDRYWT_PERPLANT', 'KERNELMOISTURE_P', 'DAYSTOANTHESIS',
-              'DAYSTOSILK', 'ASI', 'AVGFLAGHT_CM'] + keys
-
+cols2keep = ['KERNELDRYWT_PERPLANT',
+              'DAYSTOSILK', 'AVGFLAGHT_CM'] + keys
 df_agro = df_agro.loc[:, cols2keep]
-
 df_gasex_g = pd.merge(df_gasex_g, df_agro, on=keys, how='inner')
 
 # Assess if the yield missingness is related to any other variable
@@ -89,8 +88,8 @@ cols2keep = quantcols
 cols2keep.append('YEAR')
 
 # It looks like kernel weight might have outlier, let's scale and see how many sd 
-numeric_cols = 'KERNELDRYWT_PERPLANT'
-df_g_s = df_gasex_g['KERNELDRYWT_PERPLANT'].apply(zscore)
+numeric_cols = ['KERNELDRYWT_PERPLANT', 'DAYSTOSILK', 'AVGFLAGHEIGHT_CM']
+df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 
 # looks like one point is almost 5 SD above while everything else is > 3, let's remove
 fig, ax = plt.subplots(figsize=(8, 5))
