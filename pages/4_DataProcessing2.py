@@ -86,6 +86,7 @@ df_gasex_g.drop(columns = 'yield_missing', inplace = True)
 
 cols2keep = quantcols
 cols2keep.append('YEAR')
+df_gasex_g = df_gasex_g.dropna()
 
 # It looks like kernel weight might have outlier, let's scale and see how many sd 
 numeric_cols = ['KERNELDRYWT_PERPLANT', 'DAYSTOSILK', 'AVGFLAGHT_CM']
