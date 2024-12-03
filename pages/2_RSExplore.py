@@ -8,7 +8,7 @@ def main():
     
     # Load data
     df = pd.read_csv('Data/MS.csv')
-    
+    df['DAP'] = df['DAP'].astype('int')
     # Sidebar for filtering
     st.sidebar.header('Filter Options')
     
@@ -25,7 +25,7 @@ def main():
     selected_genotypes = st.sidebar.multiselect(
         'Select Genotypes', 
         available_genotypes, 
-        default=available_genotypes
+        default=['B73']
     )
     
     # Treatment selection

@@ -227,6 +227,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
     st.pyplot(fig)
+
     st.markdown('Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values.')
 
 
