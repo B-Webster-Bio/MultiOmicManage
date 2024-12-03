@@ -6,7 +6,8 @@ from scipy.stats import zscore
 import numpy as np
 
 # Streamlit app title
-st.title("Data Processing and Visualization")
+st.title("Data Processing")
+
 
 # Load datasets
 st.header("Load Data")
@@ -84,15 +85,11 @@ st.pyplot(fig)
 quantcols.remove('yield_missing')
 df_gasex_g.drop(columns = 'yield_missing', inplace = True)
 
-# all of the missing values are from 2023
-df_gas_miss = df_gasex_g.loc[df_gasex_g['KERNELDRYWT_PERPLANT'].isna(), :]
-print(df_gas_miss['YEAR'].value_counts())
-
 df_gasex_g.sort_values(by='YEAR', inplace=True)
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.heatmap(df_gasex_g.isna(), cmap="magma", ax = ax)
 st.pyplot(fig)
-
+st.markdown('All the missing yield is from 2023 and does not appear to be related to other traits so let us drop')
 cols2keep = quantcols
 cols2keep.append('YEAR')
 df_gasex_g = df_gasex_g.dropna()
@@ -106,7 +103,7 @@ fig, ax = plt.subplots(figsize=(8, 5))
 sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax=ax)
 plt.title('Yield ZScores Before')
 st.pyplot(fig)
-
+st.markdown('Remove the point with a z-score about 5')
 df_gasex_g = df_gasex_g.loc[df_gasex_g['PLOT_YEAR'] != '7318_2023']
 df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 
@@ -148,6 +145,10 @@ df_ref = pd.merge(df_meta, unmelt, on =['PLOT', 'YEAR'], how = 'inner')
 df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep), ]
 df_ref['DAP'] = df_ref['DAP'].astype('int')
 
+st.subheader('Remote Sensing')
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
-plt.show()
+st.pyplot(fig)
+
+st.markdown('Remote sensing started earlier in 2022 and endedd later in 2023 but otherwise there are no missing values.')
+
