@@ -96,6 +96,7 @@ df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax=ax)
 plt.title('Yield ZScores Before')
+ax.hlines(y=3, colors='red', linestyles='dashed')
 st.pyplot(fig)
 
 df_gasex_g = df_gasex_g.loc[df_gasex_g['PLOT_YEAR'] != '7318_2023']
