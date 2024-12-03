@@ -49,7 +49,7 @@ def main():
             filtered_df, 
             x='DAP', 
             y='NDVI', 
-            color='YEAR',
+            color='PLOT_YEAR',
             line_dash='NTREATMENT',
             title='NDVI Over Days After Planting',
             labels={'DAP': 'Days After Planting', 'NDVI': 'Normalized Difference Vegetation Index'}
