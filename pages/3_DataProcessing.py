@@ -168,8 +168,6 @@ sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
 st.pyplot(fig)
 
 st.markdown('Remote sensing started earlier in 2022 and endedd later in 2023 but otherwise there are no missing values.')
-df_gasex_g.to_csv('Data/GasExAgron.csv', index=False)
-df_ref.to_csv('Data/MS.csv', index=False)
 
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
