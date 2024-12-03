@@ -11,7 +11,7 @@ def main():
     st.title('Agricultural Data Explorer')
     
     # Load data
-    df = pd.read_csv(r'Data/GasExAgron.csv', index = False)
+    df = pd.read_csv('Data/GasExAgron.csv')
     
     # Sidebar for selecting graph type and variables
     st.sidebar.header('Graph Configuration')
