@@ -88,7 +88,7 @@ cols2keep = quantcols
 cols2keep.append('YEAR')
 
 # It looks like kernel weight might have outlier, let's scale and see how many sd 
-numeric_cols = ['KERNELDRYWT_PERPLANT', 'DAYSTOSILK', 'AVGFLAGHEIGHT_CM']
+numeric_cols = ['KERNELDRYWT_PERPLANT', 'DAYSTOSILK', 'AVGFLAGHT_CM']
 df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 
 # looks like one point is almost 5 SD above while everything else is > 3, let's remove
