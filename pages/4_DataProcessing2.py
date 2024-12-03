@@ -89,10 +89,11 @@ df_gasex_g.sort_values(by='YEAR', inplace=True)
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.heatmap(df_gasex_g.isna(), cmap="magma", ax = ax)
 st.pyplot(fig)
-st.markdown('All the missing yield is from 2023 and does not appear to be related to other traits so let us drop')
+st.markdown('All the missing yield is from 2023 and does not appear to be related to other traits so let us drop missing')
 cols2keep = quantcols
 cols2keep.append('YEAR')
 df_gasex_g = df_gasex_g.dropna()
+
 
 # It looks like kernel weight might have outlier, let's scale and see how many sd 
 numeric_cols = ['KERNELDRYWT_PERPLANT', 'DAYSTOSILK', 'AVGFLAGHT_CM']
@@ -111,6 +112,18 @@ df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax = ax)
 plt.title('Yield ZScores After')
+st.pyplot(fig)
+
+#Silking
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'DAYSTOSILK', ax=ax)
+plt.title('Silking ZScores')
+st.pyplot(fig)
+
+# Height
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'AVGFLAGHT_CM', ax=ax)
+plt.title('Silking ZScores')
 st.pyplot(fig)
 
 # Plot_Years of interest
