@@ -16,7 +16,7 @@ df_gasex = pd.read_csv('Raw/MasterGasExData.csv')
 df_gasex.drop(columns=['date', 'time'], inplace=True)
 
 # formatting
-dfs = [df_pc, df_ref, df_agro, df_meta, df_gasex]
+dfs = [df_ref, df_agro, df_meta, df_gasex]
 for df in dfs:
     df['YEAR'] = df['YEAR'].astype('str')
     df['PLOT'] = df['PLOT'].astype('str')
