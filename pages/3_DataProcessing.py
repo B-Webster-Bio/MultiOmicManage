@@ -5,14 +5,14 @@ from scipy.stats import zscore
 import numpy as np
 
 # multispectral reflectance reflectance
-df_ref = pd.read_csv('Raw\MultiSpec.csv')
+df_ref = pd.read_csv('../Raw/MultiSpec.csv')
 # meta data about field plots
-df_meta = pd.read_csv('Raw\MasterMetaData.csv')
+df_meta = pd.read_csv('../Raw/MasterMetaData.csv')
 df_meta.drop(columns=['FTREATMENT', 'TYPE', 'LOCATION', 'PLANTINGDATE'], inplace=True)
 # hand collected agronomy data
-df_agro = pd.read_csv('Raw\MasterAgronData.csv')
+df_agro = pd.read_csv('../Raw/MasterAgronData.csv')
 # gas excahnge data from Licor
-df_gasex = pd.read_csv('Raw\MasterGasExData.csv')
+df_gasex = pd.read_csv('../Raw/MasterGasExData.csv')
 df_gasex.drop(columns=['date', 'time'], inplace=True)
 
 # formatting
