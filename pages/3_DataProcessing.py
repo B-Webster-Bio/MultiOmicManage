@@ -37,71 +37,72 @@ for df in dfs:
 # Merge
 df_gasex = pd.merge(df_meta, df_gasex, on=['PLOT_YEAR', 'PLOT', 'YEAR'], how='inner')
 
-st.subheader('Gas Exchange Data:')
-st.markdown('Gas Exchange is collected twice per plot so we will take average on the plot level.')
-# Visualize missing data
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.heatmap(df_gasex.isna(), cmap="magma", ax=ax)
-plt.title("Missing Data Before Mean Aggregation")
-st.pyplot(fig)
+with st.expander('Handle Missing Data and Cleaning'):
+    st.subheader('Gas Exchange Data:')
+    st.markdown('Gas Exchange is collected twice per plot so we will take average on the plot level.')
+    # Visualize missing data
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.heatmap(df_gasex.isna(), cmap="magma", ax=ax)
+    plt.title("Missing Data Before Mean Aggregation")
+    st.pyplot(fig)
 
-# Aggregation and merging
-cols = list(df_gasex.columns[9:]) + ['PLOT_YEAR']
-df_gasex_g = df_gasex[cols].groupby(by='PLOT_YEAR').mean().reset_index()
-df_gasex_g = pd.merge(df_meta, df_gasex_g, on='PLOT_YEAR', how='inner')
+    # Aggregation and merging
+    cols = list(df_gasex.columns[9:]) + ['PLOT_YEAR']
+    df_gasex_g = df_gasex[cols].groupby(by='PLOT_YEAR').mean().reset_index()
+    df_gasex_g = pd.merge(df_meta, df_gasex_g, on='PLOT_YEAR', how='inner')
 
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.heatmap(df_gasex_g.isna(), cmap="magma", ax=ax)
-plt.title('Missing After Aggregate')
-st.pyplot(fig)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.heatmap(df_gasex_g.isna(), cmap="magma", ax=ax)
+    plt.title('Missing After Aggregate')
+    st.pyplot(fig)
 
-# Imputation
-st.subheader('Missing Meta Data')
-st.markdown('Meta data from one year was not listed but we can use the fwd fill method to fill in missing entries with similar ones.')
-df_gasex_g.sort_values(by='YEAR', inplace=True)
-df_gasex_g['SUBPOPULATION'] = df_gasex_g.groupby('GENOTYPE')['SUBPOPULATION'].transform(
+    # Imputation
+    st.subheader('Missing Meta Data')
+    st.markdown('Meta data from one year was not listed but we can use the fwd fill method to fill in missing entries with similar ones.')
+    df_gasex_g.sort_values(by='YEAR', inplace=True)
+    df_gasex_g['SUBPOPULATION'] = df_gasex_g.groupby('GENOTYPE')['SUBPOPULATION'].transform(
     lambda x: x.fillna(method='ffill').fillna(method='bfill'))
 
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.heatmap(df_gasex_g.isna(), cmap="magma", ax=ax)
-plt.title('Missing After Fill')
-st.pyplot(fig)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.heatmap(df_gasex_g.isna(), cmap="magma", ax=ax)
+    plt.title('Missing After Fill')
+    st.pyplot(fig)
 
 
-# keys for merging
-keys = ['PLOT_YEAR', 'PLOT', 'YEAR']
-# merge agronomic traits of interest with gas ex
-cols2keep = ['KERNELDRYWT_PERPLANT',
+    # keys for merging
+    keys = ['PLOT_YEAR', 'PLOT', 'YEAR']
+    # merge agronomic traits of interest with gas ex
+    cols2keep = ['KERNELDRYWT_PERPLANT',
               'DAYSTOSILK', 'AVGFLAGHT_CM'] + keys
-df_agro = df_agro.loc[:, cols2keep]
-df_gasex_g = pd.merge(df_gasex_g, df_agro, on=keys, how='inner')
+    df_agro = df_agro.loc[:, cols2keep]
+    df_gasex_g = pd.merge(df_gasex_g, df_agro, on=keys, how='inner')
 
-# Assess if the yield missingness is related to any other variable
-df_gasex_g['yield_missing'] = df_gasex_g['KERNELDRYWT_PERPLANT'].isna().astype(int)
-quantcols = list(df_gasex_g.columns[9:])
-st.header("Missingness correlation with trait values")
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.heatmap(df_gasex_g.loc[df_gasex_g['YEAR'] == '2023', quantcols].corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1,
+    # Assess if the yield missingness is related to any other variable
+    df_gasex_g['yield_missing'] = df_gasex_g['KERNELDRYWT_PERPLANT'].isna().astype(int)
+    quantcols = list(df_gasex_g.columns[9:])
+    st.header("Missingness correlation with trait values")
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.heatmap(df_gasex_g.loc[df_gasex_g['YEAR'] == '2023', quantcols].corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1,
             ax=ax)
-st.pyplot(fig)
-quantcols.remove('yield_missing')
-df_gasex_g.drop(columns = 'yield_missing', inplace = True)
+    st.pyplot(fig)
+    quantcols.remove('yield_missing')
+    df_gasex_g.drop(columns = 'yield_missing', inplace = True)
 
-df_gasex_g.sort_values(by='YEAR', inplace=True)
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.heatmap(df_gasex_g.isna(), cmap="magma", ax = ax)
-st.pyplot(fig)
-st.markdown('All the missing yield is from 2023 and does not appear to be related to other traits so let us drop missing')
-cols2keep = quantcols
-cols2keep.append('YEAR')
-df_gasex_g = df_gasex_g.dropna()
+    df_gasex_g.sort_values(by='YEAR', inplace=True)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.heatmap(df_gasex_g.isna(), cmap="magma", ax = ax)
+    st.pyplot(fig)
+    st.markdown('All the missing yield is from 2023 and does not appear to be related to other traits so let us drop missing')
+    cols2keep = quantcols
+    cols2keep.append('YEAR')
+    df_gasex_g = df_gasex_g.dropna()
 
 
 # It looks like kernel weight might have outlier, let's scale and see how many sd 
 numeric_cols = ['KERNELDRYWT_PERPLANT', 'DAYSTOSILK', 'AVGFLAGHT_CM']
 df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 
-with st.expander('Agronomic Z-Score plots'):
+with st.expander('Outlier Detection with Z-Score'):
 
     # looks like one point is almost 5 SD above while everything else is > 3, let's remove
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -139,6 +140,37 @@ keys = ['PLOT_YEAR', 'PLOT', 'YEAR']
 # select only those plots we are interested in
 df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep)]
 
+with st.expander('Remote Sensing Processing:'):
+    st.subheader('Convert Dates to Days After Planting (DAP)')
+    st.code(''' 
+planting_date = '2023-05-25' # example
+df = pd.DataFrame()
+for f in d:
+    df_n = pd.read_csv(f)
+    df_n[['Temp', 'Band']] = df_n['Source'].str.split('_', expand=True)
+    df_n['PlantingDate'] = pd.to_datetime('2023-05-25')
+    sdate = f[:8]
+    df_n['SampleDate'] = pd.to_datetime(sdate, format='%Y%m%d')
+    df_n['DAP'] = (df_n['SampleDate'] - df_n['PlantingDate']).dt.days
+    df = pd.concat([df, df_n])
+    print(df_n.shape)
+'''
+            )
+    st.subheader('Calculate Vegatative Indices')
+    st.code('''
+df_RS['NDVI'] = (df_RS['NIR'] - df_RS['Red']) / (df_RS['NIR'] + df_RS['Red'])
+df_RS['GNDVI'] = (df_RS['NIR'] - df_RS['Green']) / (df_RS['NIR'] + df_RS['Green'])
+df_RS['RDVI'] = (df_RS['NIR'] - df_RS['Red']) / (np.sqrt(df_RS['NIR'] + df_RS['Red']))
+df_RS['NLI'] = ((df_RS['NIR']**2) - df_RS['Red']) / ((df_RS['NIR']**2) + df_RS['Red'])
+df_RS['CVI'] = (df_RS['NIR'] * df_RS['NIR']) / (df_RS['Green']**2)
+df_RS['MSR'] = ((df_RS['NIR'] / df_RS['Red']) - 1) / ((np.sqrt(df_RS['NIR'] / df_RS['Red'])) + 1)
+df_RS['NDI'] = (df_RS['RedEdge'] - df_RS['Red']) / (df_RS['RedEdge'] + df_RS['Red'])
+df_RS['NDVIRedge'] = (df_RS['NIR'] - df_RS['RedEdge']) / (df_RS['NIR'] + df_RS['RedEdge'])
+df_RS['PSRI'] = (df_RS['Red'] - df_RS['Blue']) / df_RS['RedEdge']
+df_RS['CIRedge'] = (df_RS['NIR'] / df_RS['RedEdge']) - 1
+df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) / (df_RS['RedEdge'] - df_RS['Red'])
+'''
+            )
 
 # The multispectral reflectance data is most useful when processed into vegetative indices 
 # Let's make MS table now
@@ -160,16 +192,49 @@ unmelt['MTCI'] = (unmelt['NIR'] - unmelt['RedEdge']) / (unmelt['RedEdge'] - unme
 
 unmelt[['PLOT', 'YEAR', 'DAP']] = unmelt['ID'].str.split(pat = '_', n=2, expand = True)
 
-df_ref = pd.merge(df_meta, unmelt, on =['PLOT', 'YEAR'], how = 'inner')
-df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep), ]
-df_ref['DAP'] = df_ref['DAP'].astype('int')
+with st.expander('Remote Sensing Processing:'):
+    st.subheader('Convert Dates to Days After Planting (DAP)')
+    st.code(''' 
+planting_date = '2023-05-25' # example
+df = pd.DataFrame()
+for f in d:
+    df_n = pd.read_csv(f)
+    df_n[['Temp', 'Band']] = df_n['Source'].str.split('_', expand=True)
+    df_n['PlantingDate'] = pd.to_datetime('2023-05-25')
+    sdate = f[:8]
+    df_n['SampleDate'] = pd.to_datetime(sdate, format='%Y%m%d')
+    df_n['DAP'] = (df_n['SampleDate'] - df_n['PlantingDate']).dt.days
+    df = pd.concat([df, df_n])
+    print(df_n.shape)
+'''
+            )
+    st.subheader('Calculate Vegatative Indices')
+    st.code('''
+df_RS['NDVI'] = (df_RS['NIR'] - df_RS['Red']) / (df_RS['NIR'] + df_RS['Red'])
+df_RS['GNDVI'] = (df_RS['NIR'] - df_RS['Green']) / (df_RS['NIR'] + df_RS['Green'])
+df_RS['RDVI'] = (df_RS['NIR'] - df_RS['Red']) / (np.sqrt(df_RS['NIR'] + df_RS['Red']))
+df_RS['NLI'] = ((df_RS['NIR']**2) - df_RS['Red']) / ((df_RS['NIR']**2) + df_RS['Red'])
+df_RS['CVI'] = (df_RS['NIR'] * df_RS['NIR']) / (df_RS['Green']**2)
+df_RS['MSR'] = ((df_RS['NIR'] / df_RS['Red']) - 1) / ((np.sqrt(df_RS['NIR'] / df_RS['Red'])) + 1)
+df_RS['NDI'] = (df_RS['RedEdge'] - df_RS['Red']) / (df_RS['RedEdge'] + df_RS['Red'])
+df_RS['NDVIRedge'] = (df_RS['NIR'] - df_RS['RedEdge']) / (df_RS['NIR'] + df_RS['RedEdge'])
+df_RS['PSRI'] = (df_RS['Red'] - df_RS['Blue']) / df_RS['RedEdge']
+df_RS['CIRedge'] = (df_RS['NIR'] / df_RS['RedEdge']) - 1
+df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) / (df_RS['RedEdge'] - df_RS['Red'])
+'''
+            )
+    df_ref = pd.merge(df_meta, unmelt, on =['PLOT', 'YEAR'], how = 'inner')
+    df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep), ]
+    df_ref['DAP'] = df_ref['DAP'].astype('int')
 
-st.subheader('Remote Sensing')
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
-st.pyplot(fig)
+    st.subheader('Remote Sensing')
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
+    st.pyplot(fig)
 
-st.markdown('Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values.')
+    st.markdown('Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values.')
+
+
 
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
