@@ -31,7 +31,7 @@ for df in dfs:
     df['PLOT'] = df['PLOT'].astype('str')
     df['PLOT_YEAR'] = df['PLOT_YEAR'].astype('str')
 
-# Subset gas exchange data
+# Merge
 df_gasex = pd.merge(df_meta, df_gasex, on=['PLOT_YEAR', 'PLOT', 'YEAR'], how='inner')
 
 # Visualize missing data
@@ -62,6 +62,17 @@ fig, ax = plt.subplots(figsize=(8, 5))
 sns.heatmap(df_gasex_g.isna(), cmap="magma", ax=ax)
 plt.title('Missing After Fill')
 st.pyplot(fig)
+
+# keys for merging
+keys = ['PLOT_YEAR', 'PLOT', 'YEAR']
+
+# merge agronomic traits of interest with gas ex
+cols2keep = ['KERNELDRYWT_PERPLANT', 'KERNELMOISTURE_P', 'DAYSTOANTHESIS',
+              'DAYSTOSILK', 'ASI', 'AVGFLAGHT_CM'] + keys
+
+df_agro = df_agro.loc[:, cols2keep]
+
+df_gasex_g = pd.merge(df_gasex_g, df_agro, on=keys, how='inner')
 
 # Outlier detection and removal
 numeric_cols = df_gasex_g.select_dtypes(include=[np.number]).columns
