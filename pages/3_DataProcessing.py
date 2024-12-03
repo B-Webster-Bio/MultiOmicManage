@@ -4,8 +4,6 @@ import seaborn as sns
 from scipy.stats import zscore
 import numpy as np
 
-# point-cloud remote sensing 
-df_pc = pd.read_csv('Raw\RGBAutoHts.csv')
 # multispectral reflectance reflectance
 df_ref = pd.read_csv('Raw\MultiSpec.csv')
 # meta data about field plots
