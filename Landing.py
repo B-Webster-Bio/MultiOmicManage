@@ -13,10 +13,10 @@ with col1:
     st.image('Supp/CornHarvest.PNG', caption = 'Hand corn harvest (PBS Wisconsin)')
 
 with col2:
-    st.markdown('Agronomic traits were collected by hand. They include some of the most important trait that a plant breeding might consider:')
-    st.markdown("**KernelDryWt_PerPlant** -  Avg grams of grain per plant harvested")
+    st.markdown('Agronomic traits were collected by hand. They include some of the most important trait that a plant breeding considers such as yield:')
+    st.markdown("**KernelDryWt_PerPlant** -  Yield - Avg grams of moisture adjusted grain per plant harvested")
     st.markdown('**DaysToSilk** - The number of days after planting it takes for flowering to occur')
-    st.markdown('**AvgFlagHt** - The height measured from the ground to the top leaf')
+    st.markdown('**AvgFlagHt** - The height measured from the ground to the top leaf in cm')
 
 st.subheader('2. Leaf gas exchange')
 col1, col2 = st.columns(2)

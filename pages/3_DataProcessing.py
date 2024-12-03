@@ -101,34 +101,36 @@ df_gasex_g = df_gasex_g.dropna()
 numeric_cols = ['KERNELDRYWT_PERPLANT', 'DAYSTOSILK', 'AVGFLAGHT_CM']
 df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 
-# looks like one point is almost 5 SD above while everything else is > 3, let's remove
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax=ax)
-plt.title('Yield ZScores Before')
-st.pyplot(fig)
-st.markdown('Remove the point with a z-score about 5')
-df_gasex_g = df_gasex_g.loc[df_gasex_g['PLOT_YEAR'] != '7318_2023']
-df_g_s = df_gasex_g[numeric_cols].apply(zscore)
+with st.expander('Agronomic Z-Score plots'):
 
-# After
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax = ax)
-plt.title('Yield ZScores After')
-st.pyplot(fig)
+    # looks like one point is almost 5 SD above while everything else is > 3, let's remove
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax=ax)
+    plt.title('Yield ZScores Before')
+    st.pyplot(fig)
+    st.markdown('Remove the point with a z-score about 5')
+    df_gasex_g = df_gasex_g.loc[df_gasex_g['PLOT_YEAR'] != '7318_2023']
+    df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 
-#Silking
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'DAYSTOSILK', ax=ax)
-plt.title('Silking ZScores')
-st.pyplot(fig)
-st.markdown('Looks good, you can see difference between years but that is not rare')
+    # After
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax = ax)
+    plt.title('Yield ZScores After')
+    st.pyplot(fig)
 
-# Height
-fig, ax = plt.subplots(figsize=(8, 5))
-sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'AVGFLAGHT_CM', ax=ax)
-plt.title('Height ZScores')
-st.pyplot(fig)
-st.markdown('Looks good!')
+    #Silking
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'DAYSTOSILK', ax=ax)
+    plt.title('Silking ZScores')
+    st.pyplot(fig)
+    st.markdown('Looks good, you can see difference between years but that is not rare')
+
+    # Height
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'AVGFLAGHT_CM', ax=ax)
+    plt.title('Height ZScores')
+    st.pyplot(fig)
+    st.markdown('Looks good!')
 
 # Plot_Years of interest
 plots2keep = set(df_gasex_g['PLOT_YEAR'].values)
@@ -167,7 +169,7 @@ fig, ax = plt.subplots(figsize=(8, 5))
 sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
 st.pyplot(fig)
 
-st.markdown('Remote sensing started earlier in 2022 and endedd later in 2023 but otherwise there are no missing values.')
+st.markdown('Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values.')
 
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
