@@ -39,13 +39,15 @@ with col1:
     st.image('Supp/NDVI.png', caption = 'NDVI is generally related to chlorophyll content')
 
 with col2:
-    st.header("Remote Sensing Parameters:")
     st.markdown('''Reflectance values of red, green, blue, near-infrared(NIR), and red-edge wavelengths are together called multispectral imagery. 
                 They can be collected quickly by flying a drone over a field and then processed into vegetative indices such as NDVI. Veg indices can be
                 highly associated with other traits of interest such as yield. One advantage of remote sensing data is that it provides a nice time-series 
                 data set that can span much of the growing season.''')
     st.markdown("**Vegetative Indices**:")
-    st.markdown("**NDVI**, **GNDVI**, **RDVI**, **NLI**, **CVI**, **MSR**, **NDI**, **NDVIRedEdge**, **PSRI**, **CIRedEdge**, **MTCI**")
+    st.markdown('''**NDVI**, **GNDVI**, **RDVI**,  
+                 **NLI**, **CVI**, **MSR**,  
+                **NDI**, **NDVIRedEdge**, **PSRI**,  
+                 **CIRedEdge**, **MTCI**''')
     
 
 st.image('Supp/RGBFIELD.png', caption = 'RGB image from drone')
