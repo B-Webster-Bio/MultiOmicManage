@@ -84,6 +84,15 @@ st.pyplot(fig)
 quantcols.remove('yield_missing')
 df_gasex_g.drop(columns = 'yield_missing', inplace = True)
 
+# all of the missing values are from 2023
+df_gas_miss = df_gasex_g.loc[df_gasex_g['KERNELDRYWT_PERPLANT'].isna(), :]
+print(df_gas_miss['YEAR'].value_counts())
+
+df_gasex_g.sort_values(by='YEAR', inplace=True)
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.heatmap(df_gasex_g.isna(), cmap="magma", ax = ax)
+st.pyplot(fig)
+
 cols2keep = quantcols
 cols2keep.append('YEAR')
 df_gasex_g = df_gasex_g.dropna()
