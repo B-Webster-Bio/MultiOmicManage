@@ -140,37 +140,6 @@ keys = ['PLOT_YEAR', 'PLOT', 'YEAR']
 # select only those plots we are interested in
 df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep)]
 
-with st.expander('Remote Sensing Processing:'):
-    st.subheader('Convert Dates to Days After Planting (DAP)')
-    st.code(''' 
-planting_date = '2023-05-25' # example
-df = pd.DataFrame()
-for f in d:
-    df_n = pd.read_csv(f)
-    df_n[['Temp', 'Band']] = df_n['Source'].str.split('_', expand=True)
-    df_n['PlantingDate'] = pd.to_datetime('2023-05-25')
-    sdate = f[:8]
-    df_n['SampleDate'] = pd.to_datetime(sdate, format='%Y%m%d')
-    df_n['DAP'] = (df_n['SampleDate'] - df_n['PlantingDate']).dt.days
-    df = pd.concat([df, df_n])
-    print(df_n.shape)
-'''
-            )
-    st.subheader('Calculate Vegatative Indices')
-    st.code('''
-df_RS['NDVI'] = (df_RS['NIR'] - df_RS['Red']) / (df_RS['NIR'] + df_RS['Red'])
-df_RS['GNDVI'] = (df_RS['NIR'] - df_RS['Green']) / (df_RS['NIR'] + df_RS['Green'])
-df_RS['RDVI'] = (df_RS['NIR'] - df_RS['Red']) / (np.sqrt(df_RS['NIR'] + df_RS['Red']))
-df_RS['NLI'] = ((df_RS['NIR']**2) - df_RS['Red']) / ((df_RS['NIR']**2) + df_RS['Red'])
-df_RS['CVI'] = (df_RS['NIR'] * df_RS['NIR']) / (df_RS['Green']**2)
-df_RS['MSR'] = ((df_RS['NIR'] / df_RS['Red']) - 1) / ((np.sqrt(df_RS['NIR'] / df_RS['Red'])) + 1)
-df_RS['NDI'] = (df_RS['RedEdge'] - df_RS['Red']) / (df_RS['RedEdge'] + df_RS['Red'])
-df_RS['NDVIRedge'] = (df_RS['NIR'] - df_RS['RedEdge']) / (df_RS['NIR'] + df_RS['RedEdge'])
-df_RS['PSRI'] = (df_RS['Red'] - df_RS['Blue']) / df_RS['RedEdge']
-df_RS['CIRedge'] = (df_RS['NIR'] / df_RS['RedEdge']) - 1
-df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) / (df_RS['RedEdge'] - df_RS['Red'])
-'''
-            )
 
 # The multispectral reflectance data is most useful when processed into vegetative indices 
 # Let's make MS table now
@@ -193,6 +162,12 @@ unmelt['MTCI'] = (unmelt['NIR'] - unmelt['RedEdge']) / (unmelt['RedEdge'] - unme
 unmelt[['PLOT', 'YEAR', 'DAP']] = unmelt['ID'].str.split(pat = '_', n=2, expand = True)
 
 with st.expander('Remote Sensing Processing:'):
+    st.markdown('''Mean raw reflectance values of the **Red**, **Green**, **Blue**, **Near-Infrared(NIR)**, **Red-Edge** 
+                wavelength bands were extracted from each plot at multiple dates in 2022 and 2023 with ArcPy pipelines.  
+                [GIS_Tools - MSThreshAndExtract](https://github.com/B-Webster-Bio/GIS_Tools). To make the data more comparable 
+                between years we will convert from sample date to DaysAfterPlanting(DAP). Next we will calculate 
+                some well known vegetative indices with a focus on ones that self-normalize. 
+                ''')
     st.subheader('Convert Dates to Days After Planting (DAP)')
     st.code(''' 
 planting_date = '2023-05-25' # example
