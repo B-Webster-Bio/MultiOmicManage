@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import zscore
 import numpy as np
+import plotly.express as px
 
 st.header("Explore Data")
 
