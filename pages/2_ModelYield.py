@@ -5,6 +5,7 @@ import seaborn as sns
 from scipy.stats import zscore
 import numpy as np
 from scipy import stats
+import plotly.graph_objects as go
 
 st.header("Model Yield")
 st.markdown('Leverage multi-omics to predict plot yield without harvesting.')
