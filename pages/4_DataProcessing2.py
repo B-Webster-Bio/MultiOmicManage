@@ -90,7 +90,7 @@ cols2keep.append('YEAR')
 
 # It looks like kernel weight might have outlier, let's scale and see how many sd 
 numeric_cols = 'KERNELDRYWT_PERPLANT'
-df_g_s = df_gasex_g[numeric_cols].apply(zscore)
+df_g_s = df_gasex_g['KERNELDRYWT_PERPLANT'].apply(zscore)
 
 # looks like one point is almost 5 SD above while everything else is > 3, let's remove
 fig, ax = plt.subplots(figsize=(8, 5))
