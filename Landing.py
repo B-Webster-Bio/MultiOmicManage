@@ -42,7 +42,7 @@ with col2:
     st.markdown('''Reflectance values of red, green, blue, near-infrared(NIR), and red-edge wavelengths are together called multispectral imagery. 
                 They can be collected quickly by flying a drone over a field and then processed into vegetative indices such as NDVI. Veg indices can be
                 highly associated with other traits of interest such as yield. One advantage of remote sensing data is that it provides a nice time-series 
-                data set that can span much of the growing season.''')
+                data set that can span much of the growing season. _See_ _"DataProcessing"_ _for specific calcs_.''')
     st.markdown("**Vegetative Indices**:")
     st.markdown('''**NDVI**, **GNDVI**, **RDVI**,  
                  **NLI**, **CVI**, **MSR**,  
