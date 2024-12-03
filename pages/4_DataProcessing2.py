@@ -63,52 +63,71 @@ sns.heatmap(df_gasex_g.isna(), cmap="magma", ax=ax)
 plt.title('Missing After Fill')
 st.pyplot(fig)
 
-# keys for merging
-keys = ['PLOT_YEAR', 'PLOT', 'YEAR']
+# Assess if the yield missingness is related to any other variable
+df_gasex_g['yield_missing'] = df_gasex_g['KERNELDRYWT_PERPLANT'].isna().astype(int)
+quantcols = list(df_gasex_g.columns[9:])
+st.header("Missingness correlation with trait values")
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.heatmap(df_gasex_g.loc[df_gasex_g['YEAR'] == '2023', quantcols].corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1,
+            ax=ax)
+st.pyplot(fig)
+quantcols.remove('yield_missing')
+df_gasex_g.drop(columns = 'yield_missing', inplace = True)
 
-# merge agronomic traits of interest with gas ex
-cols2keep = ['KERNELDRYWT_PERPLANT', 'KERNELMOISTURE_P', 'DAYSTOANTHESIS',
-              'DAYSTOSILK', 'ASI', 'AVGFLAGHT_CM'] + keys
+cols2keep = quantcols
+cols2keep.append('YEAR')
 
-df_agro = df_agro.loc[:, cols2keep]
-
-df_gasex_g = pd.merge(df_gasex_g, df_agro, on=keys, how='inner')
-
-# Outlier detection and removal
+# It looks like kernel weight might have outlier, let's scale and see how many sd 
 numeric_cols = df_gasex_g.select_dtypes(include=[np.number]).columns
 df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 
-st.header("Yield Z-Scores Before Outlier Removal")
+# looks like one point is almost 5 SD above while everything else is > 3, let's remove
 fig, ax = plt.subplots(figsize=(8, 5))
-sns.scatterplot(data=df_g_s, x=df_g_s.index, y='KERNELDRYWT_PERPLANT', ax=ax)
+sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax=ax)
 plt.title('Yield ZScores Before')
 st.pyplot(fig)
-
 df_gasex_g = df_gasex_g.loc[df_gasex_g['PLOT_YEAR'] != '7318_2023']
+
 df_g_s = df_gasex_g[numeric_cols].apply(zscore)
 
-st.header("Yield Z-Scores After Outlier Removal")
+# After
 fig, ax = plt.subplots(figsize=(8, 5))
-sns.scatterplot(data=df_g_s, x=df_g_s.index, y='KERNELDRYWT_PERPLANT', ax=ax)
+sns.scatterplot(data=df_g_s, x= df_g_s.index, y = 'KERNELDRYWT_PERPLANT', ax = ax)
 plt.title('Yield ZScores After')
 st.pyplot(fig)
 
-# Vegetative indices calculation
-df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(df_gasex_g['PLOT_YEAR'])]
-df_ref['ID'] = df_ref['PLOT_YEAR'] + "_" + df_ref['DAP'].astype('str')
-unmelt = df_ref.pivot(index='ID', columns='Band', values='MEAN').reset_index()
+# Plot_Years of interest
+plots2keep = set(df_gasex_g['PLOT_YEAR'].values)
+# keys for merging
+keys = ['PLOT_YEAR', 'PLOT', 'YEAR']
+# select only those plots we are interested in
+df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep)]
+
+
+# The multispectral reflectance data is most useful when processed into vegetative indices 
+# Let's make MS table now
+# Prepare data
+df_ref['ID'] = df_ref['PLOT_YEAR'].astype('str') + "_" + df_ref['DAP'].astype('str')
+unmelt = df_ref.pivot(index = 'ID', columns = 'Band', values = 'MEAN').reset_index()
+# Just doing this here to move it down later
 unmelt['NDVI'] = (unmelt['NIR'] - unmelt['Red']) / (unmelt['NIR'] + unmelt['Red'])
 unmelt['GNDVI'] = (unmelt['NIR'] - unmelt['Green']) / (unmelt['NIR'] + unmelt['Green'])
 unmelt['RDVI'] = (unmelt['NIR'] - unmelt['Red']) / (np.sqrt(unmelt['NIR'] + unmelt['Red']))
-unmelt[['PLOT', 'YEAR', 'DAP']] = unmelt['ID'].str.split('_', expand=True)
+unmelt['NLI'] = ((unmelt['NIR']**2) - unmelt['Red']) / ((unmelt['NIR']**2) + unmelt['Red'])
+unmelt['CVI'] = (unmelt['NIR'] * unmelt['NIR']) / (unmelt['Green']**2)
+unmelt['MSR'] = ((unmelt['NIR'] / unmelt['Red']) - 1) / ((np.sqrt(unmelt['NIR'] / unmelt['Red'])) + 1)
+unmelt['NDI'] = (unmelt['RedEdge'] - unmelt['Red']) / (unmelt['RedEdge'] + unmelt['Red'])
+unmelt['NDVIRedge'] = (unmelt['NIR'] - unmelt['RedEdge']) / (unmelt['NIR'] + unmelt['RedEdge'])
+unmelt['PSRI'] = (unmelt['Red'] - unmelt['Blue']) / unmelt['RedEdge']
+unmelt['CIRedge'] = (unmelt['NIR'] / unmelt['RedEdge']) - 1
+unmelt['MTCI'] = (unmelt['NIR'] - unmelt['RedEdge']) / (unmelt['RedEdge'] - unmelt['Red'])
 
-df_ref = pd.merge(df_meta, unmelt, on=['PLOT', 'YEAR'], how='inner')
+unmelt[['PLOT', 'YEAR', 'DAP']] = unmelt['ID'].str.split(pat = '_', n=2, expand = True)
+
+df_ref = pd.merge(df_meta, unmelt, on =['PLOT', 'YEAR'], how = 'inner')
+df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep), ]
 df_ref['DAP'] = df_ref['DAP'].astype('int')
 
-st.header("NDVI Over Time")
 fig, ax = plt.subplots(figsize=(8, 5))
-sns.lineplot(data=df_ref, x='DAP', y='NDVI', hue='YEAR', ax=ax)
-plt.title('NDVI Across Time')
-st.pyplot(fig)
-
-st.success("Data processing and visualization complete!")
+sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
+plt.show()
