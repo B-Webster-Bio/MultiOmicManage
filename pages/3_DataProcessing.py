@@ -185,30 +185,49 @@ for f in d:
             )
     st.subheader('Calculate Vegatative Indices')
     st.code('''
-df_RS['NDVI'] = (df_RS['NIR'] - df_RS['Red']) / (df_RS['NIR'] + df_RS['Red'])
-df_RS['GNDVI'] = (df_RS['NIR'] - df_RS['Green']) / (df_RS['NIR'] + df_RS['Green'])
-df_RS['RDVI'] = (df_RS['NIR'] - df_RS['Red']) / (np.sqrt(df_RS['NIR'] + df_RS['Red']))
-df_RS['NLI'] = ((df_RS['NIR']**2) - df_RS['Red']) / ((df_RS['NIR']**2) + df_RS['Red'])
-df_RS['CVI'] = (df_RS['NIR'] * df_RS['NIR']) / (df_RS['Green']**2)
-df_RS['MSR'] = ((df_RS['NIR'] / df_RS['Red']) - 1) / ((np.sqrt(df_RS['NIR'] / df_RS['Red'])) + 1)
-df_RS['NDI'] = (df_RS['RedEdge'] - df_RS['Red']) / (df_RS['RedEdge'] + df_RS['Red'])
-df_RS['NDVIRedge'] = (df_RS['NIR'] - df_RS['RedEdge']) / (df_RS['NIR'] + df_RS['RedEdge'])
-df_RS['PSRI'] = (df_RS['Red'] - df_RS['Blue']) / df_RS['RedEdge']
-df_RS['CIRedge'] = (df_RS['NIR'] / df_RS['RedEdge']) - 1
-df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) / (df_RS['RedEdge'] - df_RS['Red'])
+df_RS['NDVI'] = (df_RS['NIR'] - df_RS['Red']) / 
+            (df_RS['NIR'] + df_RS['Red'])
+
+df_RS['GNDVI'] = (df_RS['NIR'] - df_RS['Green']) / 
+            (df_RS['NIR'] + df_RS['Green'])
+
+df_RS['RDVI'] = (df_RS['NIR'] - df_RS['Red']) / 
+            (np.sqrt(df_RS['NIR'] + df_RS['Red']))
+
+df_RS['NLI'] = ((df_RS['NIR']**2) - df_RS['Red']) / 
+            ((df_RS['NIR']**2) + df_RS['Red'])
+
+df_RS['CVI'] = (df_RS['NIR'] * df_RS['NIR']) / 
+            (df_RS['Green']**2)
+
+df_RS['MSR'] = ((df_RS['NIR'] / df_RS['Red']) - 1) / 
+            ((np.sqrt(df_RS['NIR'] / df_RS['Red'])) + 1)
+
+df_RS['NDI'] = (df_RS['RedEdge'] - df_RS['Red']) / 
+            (df_RS['RedEdge'] + df_RS['Red'])
+
+df_RS['NDVIRedge'] = (df_RS['NIR'] - df_RS['RedEdge']) / 
+            (df_RS['NIR'] + df_RS['RedEdge'])
+
+df_RS['PSRI'] = (df_RS['Red'] - df_RS['Blue']) / 
+            df_RS['RedEdge']
+
+df_RS['CIRedge'] = (df_RS['NIR'] / 
+            df_RS['RedEdge']) - 1
+
+df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) / 
+            (df_RS['RedEdge'] - df_RS['Red'])
 '''
             )
     df_ref = pd.merge(df_meta, unmelt, on =['PLOT', 'YEAR'], how = 'inner')
     df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep), ]
     df_ref['DAP'] = df_ref['DAP'].astype('int')
 
-    st.subheader('Remote Sensing')
+    st.subheader('RS Coverage')
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
     st.pyplot(fig)
-
     st.markdown('Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values.')
-
 
 
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
