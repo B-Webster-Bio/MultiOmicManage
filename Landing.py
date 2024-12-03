@@ -2,8 +2,12 @@ import streamlit as st
 
 st.title('Multi-omic Management for Plant Breeding')
 md = '''The plant breeding process makes extensive use of data science techniques to identify and select useful plant germplasm. 
-In recent years there has been an explosion of the data types available to plant breeders. From remote sensing to advances in plant health monitoring. The abundance of data can be helpful but also 
+In recent years there has been an explosion of the data types available to plant breeders (gen_omics_ and phen_omics_). The abundance of data can be helpful but also 
 hard to manage. Multi-omic Mangement aims to provide a resource that can help integrate and leverage multi-omic data in a plant breeding context.'''
+st.markdown(' * On this page learn about the different data types')
+st.markdown(" * On _DataExplorer_ investigate variable relationships")
+st.markdown(' * On _ModelYield_ leverage the abundance of data to try and predict grain yield')
+st.markdown(' * On _DataProcessing_ learn how data is processed and cleaned')
 st.markdown(md)
 
 st.title('Data Types and Description:')

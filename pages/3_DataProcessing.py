@@ -8,8 +8,8 @@ import numpy as np
 # Streamlit app title
 st.title("Data Processing")
 st.markdown('''All the data is currently stored as raw data and meta data with "Plot_Year" serving as a key 
-            to match values. In this script I am merging the meta data with raw data, handling missing values, 
-            and removing outliers.''')
+            to match values. On this page you can see how merging the meta data with raw data, handling missing values, 
+            removing outliers, and processing of remote sensing data was done.''')
 
 # Load datasets
 st.header("Load Data")
@@ -80,7 +80,7 @@ with st.expander('Handle Missing Data and Cleaning'):
     # Assess if the yield missingness is related to any other variable
     df_gasex_g['yield_missing'] = df_gasex_g['KERNELDRYWT_PERPLANT'].isna().astype(int)
     quantcols = list(df_gasex_g.columns[9:])
-    st.header("Missingness correlation with trait values")
+    st.subheader("Missingness correlation with trait values")
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.heatmap(df_gasex_g.loc[df_gasex_g['YEAR'] == '2023', quantcols].corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1,
             ax=ax)
