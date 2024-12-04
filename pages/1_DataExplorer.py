@@ -15,6 +15,7 @@ def main():
     
     # Load data
     df = pd.read_csv('Data/GasExAgron.csv')
+    df['YEAR'] = df['YEAR'].astype('str')
     exclude_cols = ['NTREATMENT', 'SUBPOPULATION', 'GENOTYPE', 'YEAR', 'PLOT_YEAR', 'PLOT']
     quant_cols = [col for col in df.columns if col not in exclude_cols]
     

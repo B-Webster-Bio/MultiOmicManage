@@ -4,7 +4,7 @@ import plotly.express as px
 
 # Main Streamlit app
 def main():
-    st.title('NDVI Visualization')
+    st.title('Vegetative Index Time-Series Visualization')
     
     # Load data
     df = pd.read_csv('Data/MS.csv')
@@ -15,7 +15,7 @@ def main():
     
     # VI Selection
     available_VI = sorted(['NIR', 'Red', 'RedEdge', 'SAVIMASK', 
-    'NDVI', 'NDVI', 'RDVI', 'NLI', 'CVI', 'MSR', 'NDI', 'NDVIRedge', 'PSRI', 'CIRedge', 'MTCI'
+    'NDVI', 'RDVI', 'NLI', 'CVI', 'MSR', 'NDI', 'NDVIRedge', 'PSRI', 'CIRedge', 'MTCI'
 ])
     selected_VI = st.selectbox('Select Vegetative Index:', available_VI)
 
@@ -58,7 +58,7 @@ def main():
             y=selected_VI, 
             color='PLOT_YEAR',
             line_dash='NTREATMENT',
-            title='NDVI Over Days After Planting',
+            title=f'{selected_VI} Over Days After Planting',
             labels={'DAP': 'Days After Planting', 'NDVI': 'Normalized Difference Vegetation Index'}
         )
         
