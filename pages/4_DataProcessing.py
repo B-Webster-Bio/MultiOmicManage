@@ -229,7 +229,10 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
     st.pyplot(fig)
 
-    st.markdown('Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values. There is a clear difference between years so we should scale and standardize by year')
+    st.markdown('''Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values. 
+                These curves are the about expected shape from plants growing and then eventually dying off at the end 
+                of the season. There is a clear difference between years so we should scale and standardize each date 
+                within each year.''')
 
     spectral_columns = ['Blue', 'Green', 'NIR', 'Red', 'RedEdge', 'SAVIMASK', 
                     'NDVI', 'GNDVI', 'RDVI', 'NLI', 'CVI', 'MSR', 'NDI', 
@@ -251,6 +254,9 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df2023, x = 'DAP', y = 'NDVI', hue = 'GENOTYPE', style='NTREATMENT', ax=ax, legend=False)
     st.pyplot(fig)
+    st.dataframe(normalized_df)
+    normalized_df.to_csv('Data/NormMS.csv', index = False)
 
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
+st.success("Saved Normalized MultiSpec remote sensing data at Data/MS.csv")
