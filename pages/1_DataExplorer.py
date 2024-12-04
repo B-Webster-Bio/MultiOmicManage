@@ -103,6 +103,18 @@ def main():
 
     # Show the plot
     st.plotly_chart(fig, use_container_width=True)
+
+    fig = go.Figure(data=[go.Histogram(x=df[y_var])])
+
+    # Customize layout
+    fig.update_layout(
+        title=y_var,
+        xaxis_title='Value',
+        yaxis_title='Frequency'
+    )
+
+    # Show the plot
+    st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df)
 if __name__ == '__main__':
     main()
