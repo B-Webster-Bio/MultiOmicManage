@@ -9,6 +9,7 @@ def main():
     # Load data
     df = pd.read_csv('Data/MS.csv')
     df['DAP'] = df['DAP'].astype('int')
+    df['YEAR'] = df['YEAR'].astype('str')
     df = df.sort_values('DAP')
     # Sidebar for filtering
     st.sidebar.header('Filter Options')
@@ -56,7 +57,7 @@ def main():
             filtered_df, 
             x='DAP', 
             y=selected_VI, 
-            color='PLOT_YEAR',
+            color='YEAR',
             line_dash='NTREATMENT',
             title=f'{selected_VI} Over Days After Planting',
             labels={'DAP': 'Days After Planting', 'NDVI': 'Normalized Difference Vegetation Index'}
