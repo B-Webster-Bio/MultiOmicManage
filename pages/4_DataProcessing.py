@@ -231,7 +231,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     plt.text(80, 0.5, 'Gas Ex Sampling 2022', 
          horizontalalignment='center', 
          verticalalignment='bottom')
-    plt.axvline(x=99, color='o', linestyle='--')
+    plt.axvline(x=99, color='orange', linestyle='--')
     plt.text(110, 0.5, 'Gas Ex Sampling 2023', 
          horizontalalignment='center', 
          verticalalignment='center')
