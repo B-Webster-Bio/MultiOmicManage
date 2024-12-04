@@ -16,6 +16,7 @@ def main():
     # Load data
     df = pd.read_csv('Data/GasExAgron.csv')
     df['YEAR'] = df['YEAR'].astype('str')
+    df['PLOT'] = df['PLOT'].astype('str')
     exclude_cols = ['NTREATMENT', 'SUBPOPULATION', 'GENOTYPE', 'YEAR', 'PLOT_YEAR', 'PLOT']
     quant_cols = [col for col in df.columns if col not in exclude_cols]
     
@@ -43,7 +44,7 @@ def main():
     # Color by selection
     color_var = st.sidebar.selectbox(
         'Color By',
-        ['NTREATMENT', 'SUBPOPULATION', 'GENOTYPE']
+        ['NTREATMENT', 'SUBPOPULATION', 'GENOTYPE', 'YEAR']
     )
     
     # Create scatter plot with regression line
