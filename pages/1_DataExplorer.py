@@ -90,6 +90,19 @@ def main():
     st.write(f"p-value {p_value}")
     st.write(f"Regression Equation: {y_var} = {slope:.4f} * {x_var} + {intercept:.4f}")
 
+    # histograms
+   # Create histogram
+    fig = go.Figure(data=[go.Histogram(x=df[x_var])])
+
+    # Customize layout
+    fig.update_layout(
+        title=x_var,
+        xaxis_title='Value',
+        yaxis_title='Frequency'
+    )
+
+    # Show the plot
+    fig.show()
     st.dataframe(df)
 if __name__ == '__main__':
     main()

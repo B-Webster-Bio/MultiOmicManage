@@ -64,10 +64,8 @@ def main():
         
         st.plotly_chart(fig, use_container_width=True)
         
-        # Display summary statistics
-        st.write("Summary Statistics:")
-        summary_stats = filtered_df.groupby(['GENOTYPE', 'NTREATMENT'])['NDVI'].agg(['mean', 'max', 'min']).reset_index()
-        st.dataframe(summary_stats)
+    
+
     else:
         st.warning("No data matches the selected filters.")
 
