@@ -228,8 +228,16 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
     st.pyplot(fig)
 
-    st.markdown('Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values.')
+    st.markdown('Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values. There is a clear difference between years so we should scale and standardize by year')
 
+    spectral_columns = ['Blue', 'Green', 'NIR', 'Red', 'RedEdge', 'SAVIMASK', 
+                    'NDVI', 'GNDVI', 'RDVI', 'NLI', 'CVI', 'MSR', 'NDI', 
+                    'NDVIRedge', 'PSRI', 'CIRedge', 'MTCI']
 
+    # Group by 'YEAR' and 'DAP', and normalize the spectral columns
+    normalized_df = df.copy()
+    normalized_df[spectral_columns] = df_ref.groupby(['YEAR', 'DAP'])[spectral_columns].transform(
+        lambda x: (x - x.mean()) / (x.std())
+    )
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
