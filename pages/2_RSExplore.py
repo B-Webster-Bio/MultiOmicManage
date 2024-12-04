@@ -9,6 +9,7 @@ def main():
     # Load data
     df = pd.read_csv('Data/MS.csv')
     df['DAP'] = df['DAP'].astype('int')
+    df = df.sort_values('DAP')
     # Sidebar for filtering
     st.sidebar.header('Filter Options')
     
