@@ -242,5 +242,10 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     )
 
     st.dataframe(normalized_df)
+    st.subheader('RS Coverage Norm')
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.lineplot(data=normalized_df, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
+    st.pyplot(fig)
+
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
