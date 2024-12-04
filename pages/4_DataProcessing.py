@@ -227,6 +227,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     st.subheader('RS Coverage')
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
+    plt.axvline(x=92, color='r', linestyle='--')
     st.pyplot(fig)
 
     st.markdown('''Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values. 
@@ -255,7 +256,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     sns.lineplot(data=df2023, x = 'DAP', y = 'NDVI', hue = 'GENOTYPE', style='NTREATMENT', ax=ax, legend=False)
     st.pyplot(fig)
     st.dataframe(normalized_df)
-    normalized_df.to_csv('Data/NormMS.csv', index = False)
+    #normalized_df.to_csv('Data/NormMS.csv', index = False)
 
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
