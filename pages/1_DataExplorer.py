@@ -102,7 +102,7 @@ def main():
     )
 
     # Show the plot
-    fig.show()
+    st.plotly_chart(fig, use_container_width=True)
     st.dataframe(df)
 if __name__ == '__main__':
     main()
