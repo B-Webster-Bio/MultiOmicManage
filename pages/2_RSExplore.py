@@ -13,6 +13,12 @@ def main():
     # Sidebar for filtering
     st.sidebar.header('Filter Options')
     
+    # VI Selection
+    available_VI = sorted(['NIR', 'Red', 'RedEdge', 'SAVIMASK', 
+    'NDVI', 'NDVI', 'RDVI', 'NLI', 'CVI', 'MSR', 'NDI', 'NDVIRedge', 'PSRI', 'CIRedge', 'MTCI'
+])
+    selected_VI = st.selectbox('Select Vegetative Index:', available_VI)
+
     # Year selection
     available_years = sorted(df['YEAR'].unique())
     selected_years = st.sidebar.multiselect(
@@ -49,7 +55,7 @@ def main():
         fig = px.line(
             filtered_df, 
             x='DAP', 
-            y='NDVI', 
+            y=selected_VI, 
             color='PLOT_YEAR',
             line_dash='NTREATMENT',
             title='NDVI Over Days After Planting',
