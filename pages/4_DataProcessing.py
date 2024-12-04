@@ -222,7 +222,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     df_ref = pd.merge(df_meta, unmelt, on =['PLOT', 'YEAR'], how = 'inner')
     df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep), ]
     df_ref['DAP'] = df_ref['DAP'].astype('int')
-
+    st.dataframe(df_ref)
     st.subheader('RS Coverage')
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
