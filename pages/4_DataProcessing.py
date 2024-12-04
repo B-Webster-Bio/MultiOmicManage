@@ -239,5 +239,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     normalized_df[spectral_columns] = df_ref.groupby(['YEAR', 'DAP'])[spectral_columns].transform(
         lambda x: (x - x.mean()) / (x.std())
     )
+
+    st.dataframe(normalized_df)
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
