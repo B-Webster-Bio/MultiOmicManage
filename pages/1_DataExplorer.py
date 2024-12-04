@@ -92,6 +92,7 @@ def main():
 
     # histograms
    # Create histogram
+    fig = go.Figure()
     for group in df[color_var].unique():
         group_data = df[df[color_var] == group][x_var]
         fig.add_trace(go.Histogram(
