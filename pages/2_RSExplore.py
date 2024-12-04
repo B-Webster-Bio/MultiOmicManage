@@ -14,7 +14,7 @@ def main():
     st.sidebar.header('Filter Options')
     
     # VI Selection
-    available_VI = sorted(['NIR', 'Red', 'RedEdge', 'SAVIMASK', 
+    available_VI = sorted(['NIR', 'RedEdge', 
     'NDVI', 'RDVI', 'NLI', 'CVI', 'MSR', 'NDI', 'NDVIRedge', 'PSRI', 'CIRedge', 'MTCI'
 ])
     selected_VI = st.selectbox('Select Vegetative Index:', available_VI)

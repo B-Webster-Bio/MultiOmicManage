@@ -89,5 +89,6 @@ def main():
     st.write(f"p-value {p_value}")
     st.write(f"Regression Equation: {y_var} = {slope:.4f} * {x_var} + {intercept:.4f}")
 
+    st.dataframe(df)
 if __name__ == '__main__':
     main()
