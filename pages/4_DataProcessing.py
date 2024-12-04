@@ -222,8 +222,8 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     df_ref = pd.merge(df_meta, unmelt, on =['PLOT', 'YEAR'], how = 'inner')
     df_ref = df_ref.loc[df_ref['PLOT_YEAR'].isin(plots2keep), ]
     df_ref['DAP'] = df_ref['DAP'].astype('int')
-    st.dataframe(df_meta)
-    
+
+
     st.subheader('RS Coverage')
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
@@ -236,7 +236,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
                     'NDVIRedge', 'PSRI', 'CIRedge', 'MTCI']
 
     # Group by 'YEAR' and 'DAP', and normalize the spectral columns
-    normalized_df = df.copy()
+    normalized_df = df_ref.copy()
     normalized_df[spectral_columns] = df_ref.groupby(['YEAR', 'DAP'])[spectral_columns].transform(
         lambda x: (x - x.mean()) / (x.std())
     )
