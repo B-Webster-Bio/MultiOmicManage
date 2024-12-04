@@ -228,11 +228,11 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
     plt.axvline(x=92, color='b', linestyle='--')
-    plt.text(92, ax.get_ylim()[1], 'Gas Ex Sampling 2022', 
+    plt.text(80, 0.5, 'Gas Ex Sampling 2022', 
          horizontalalignment='center', 
          verticalalignment='bottom')
-    plt.axvline(x=99, color='b', linestyle='--')
-    plt.text(99, ax.get_ylim()[1], 'Gas Ex Sampling 2023', 
+    plt.axvline(x=99, color='o', linestyle='--')
+    plt.text(110, 0.5, 'Gas Ex Sampling 2023', 
          horizontalalignment='center', 
          verticalalignment='center')
     st.pyplot(fig)
