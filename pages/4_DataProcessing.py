@@ -227,7 +227,14 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     st.subheader('RS Coverage')
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
-    plt.axvline(x=92, color='r', linestyle='--')
+    plt.axvline(x=92, color='b', linestyle='--')
+    plt.text(92, ax.get_ylim()[1], 'Gas Ex Sampling 2022', 
+         horizontalalignment='center', 
+         verticalalignment='bottom')
+    plt.axvline(x=99, color='b', linestyle='--')
+    plt.text(99, ax.get_ylim()[1], 'Gas Ex Sampling 2023', 
+         horizontalalignment='center', 
+         verticalalignment='center')
     st.pyplot(fig)
 
     st.markdown('''Remote sensing started earlier in 2022 and ended later in 2023 but otherwise there are no missing values. 
