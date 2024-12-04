@@ -240,11 +240,16 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     normalized_df[spectral_columns] = df_ref.groupby(['YEAR', 'DAP'])[spectral_columns].transform(
         lambda x: (x - x.mean()) / (x.std())
     )
-
-    st.dataframe(normalized_df)
-    st.subheader('RS Coverage Norm')
+    st.subheader('RS Coverage Norm 2022')
+    df2022 = normalized_df.loc[normalized_df['YEAR'] == '2022']
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.lineplot(data=normalized_df, x = 'DAP', y = 'NDVI', hue = 'GENOTYPE', ax=ax, legend=False)
+    sns.lineplot(data=df2022, x = 'DAP', y = 'NDVI', hue = 'GENOTYPE', style='NTREATMENT', ax=ax, legend=False)
+    st.pyplot(fig)
+
+    st.subheader('RS Coverage Norm 2023')
+    df2023 = normalized_df.loc[normalized_df['YEAR'] == '2023']
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.lineplot(data=df2022, x = 'DAP', y = 'NDVI', hue = 'GENOTYPE', style='NTREATMENT', ax=ax, legend=False)
     st.pyplot(fig)
 
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
