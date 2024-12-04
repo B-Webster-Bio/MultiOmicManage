@@ -226,7 +226,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
 
     st.subheader('RS Coverage')
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax)
+    sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax, markers=True)
     plt.axvline(x=92, color='b', linestyle='--')
     plt.text(75, 0.5, 'Gas Ex Sampling 2022', 
          horizontalalignment='center', 
