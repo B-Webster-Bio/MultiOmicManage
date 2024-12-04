@@ -92,8 +92,13 @@ def main():
 
     # histograms
    # Create histogram
-    fig = go.Figure(data=[go.Histogram(x=df[x_var])])
-
+    for group in df[color_var].unique():
+        group_data = df[df[color_var] == group][x_var]
+        fig.add_trace(go.Histogram(
+            x=group_data, 
+            name=group,  # This creates the legend entry
+            opacity=0.7
+        ))
     # Customize layout
     fig.update_layout(
         title=x_var,
