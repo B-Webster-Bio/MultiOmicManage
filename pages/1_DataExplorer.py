@@ -110,8 +110,14 @@ def main():
     # Show the plot
     st.plotly_chart(fig, use_container_width=True)
 
-    fig = go.Figure(data=[go.Histogram(x=df[y_var])])
-
+    fig = go.Figure()
+    for group in df[color_var].unique():
+        group_data = df[df[color_var] == group][y_var]
+        fig.add_trace(go.Histogram(
+            x=group_data, 
+            name=group,  # This creates the legend entry
+            opacity=0.7
+        ))
     # Customize layout
     fig.update_layout(
         title=y_var,
