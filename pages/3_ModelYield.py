@@ -47,8 +47,26 @@ st.write(all_possible_features)
 st.write(df_all[all_possible_features])
 
 
+# Streamlit App
+st.title("XGBoost and Linear Regression Feature Importance and Comparison")
+
+# Feature set selection
+feature_set_options = {
+    "All Possible Features": all_possible_features,
+    "Agronomic": agron_features,
+    "RemoteSeing (Takes Long Time)": RS_Features
+}
+
+selected_feature_set_name = st.selectbox(
+    "Select Feature Set",
+    options=list(feature_set_options.keys()),
+)
+
+selected_features = feature_set_options[selected_feature_set_name]
+
+# Extract features (X) and target (y)
 y = df_all['KERNELDRYWT_PERPLANT']
-X = df_all[agron_features]
+X = df_all[selected_features]
 
 # Split data into train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -68,7 +86,7 @@ params = {
 
 # Train the XGBoost model
 evals = [(dtrain, 'train'), (dtest, 'test')]
-xgb_model = xgb.train(params, dtrain, num_boost_round=5, evals=evals, early_stopping_rounds=10)
+xgb_model = xgb.train(params, dtrain, num_boost_round=10, evals=evals, early_stopping_rounds=10)
 
 # Predict and calculate RMSE for XGBoost
 y_pred_xgb = xgb_model.predict(dtest)
@@ -79,19 +97,16 @@ importance = xgb_model.get_score(importance_type='weight')
 sorted_importance = sorted(importance.items(), key=lambda x: x[1], reverse=True)
 important_features = [feat[0] for feat in sorted_importance]
 
-# Streamlit App
-st.title("XGBoost and Linear Regression Comparison")
-
 # RMSE from XGBoost
 st.write(f"Test RMSE (XGBoost): {rmse_xgb:.4f}")
 
 # Select top 'n' features
 top_n = st.slider("Select Top n Features", min_value=1, max_value=len(important_features), value=10)
-selected_features = important_features[:top_n]
+selected_top_features = important_features[:top_n]
 
 # Filter data based on top 'n' features
-X_train_filtered = X_train[selected_features]
-X_test_filtered = X_test[selected_features]
+X_train_filtered = X_train[selected_top_features]
+X_test_filtered = X_test[selected_top_features]
 
 # Train Linear Regression model on filtered data
 linear_model = LinearRegression()
@@ -103,7 +118,7 @@ rmse_lr = mean_squared_error(y_test, y_pred_lr, squared=False)
 st.write(f"Test RMSE (Linear Regression): {rmse_lr:.4f}")
 
 # Function to plot and display feature importance
-def plot_and_display_importance(importance_type, title, top_n):
+def plot_and_display_importance(title, top_n):
     fig, ax = plt.subplots(figsize=(10, 6))
     sorted_features = sorted_importance[:top_n]
     feature_names = [f[0] for f in sorted_features]
@@ -114,21 +129,14 @@ def plot_and_display_importance(importance_type, title, top_n):
     ax.set_ylabel("Feature")
     st.pyplot(fig)
 
-# Dropdown to select importance type
-importance_type = st.selectbox(
-    "Select Feature Importance Type",
-    ["weight"],
-    format_func=lambda x: x.capitalize()
-)
-
 # Plot and display the selected importance type for top `n` features
-plot_and_display_importance(importance_type, f"Top {top_n} Feature Importance ({importance_type.capitalize()})", top_n)
+plot_and_display_importance(f"Top {top_n} Feature Importance (Weight)", top_n)
 
 # Comparison Section
 st.write("### Comparison Summary")
 st.write(
-    f"With the top {top_n} features:\n"
+    f"Using the **{selected_feature_set_name}** feature set with the top {top_n} features:\n"
     f"- **XGBoost RMSE**: {rmse_xgb:.4f}\n"
     f"- **Linear Regression RMSE**: {rmse_lr:.4f}\n"
-    f"XGBoost typically performs better with non-linear relationships, while Linear Regression may excel when the relationship is linear."
+    f"XGBoost is typically better for non-linear relationships, while Linear Regression excels with linear patterns."
 )
