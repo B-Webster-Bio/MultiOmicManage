@@ -30,5 +30,7 @@ df_all = df_all.dropna(axis=1)
 st.dataframe(df_all)
 y = df_all['KERNELDRYWT_PERPLANT']
 
-all_possible_features = df_all.columns[5:9]
+s1 = df_all.columns[6:10]
+s2 = df_all.columns[12:]
+all_possible_features = s1 + s2
 st.write(all_possible_features)
