@@ -306,16 +306,18 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     normalized_df[spectral_columns] = df_ref.groupby(['YEAR', 'DAP'])[spectral_columns].transform(
         lambda x: (x - x.mean()) / (x.std())
     )
-    st.subheader('RS Coverage Norm 2022')
+
+    st.markdown('2. Standardize within each year and time point.')
     df2022 = normalized_df.loc[normalized_df['YEAR'] == '2022']
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df2022, x = 'DAP', y = 'NDVI', hue = 'GENOTYPE', style='NTREATMENT', ax=ax, legend=False)
+    plt.title('Standardize spectra 2022')
     st.pyplot(fig)
 
-    st.subheader('RS Coverage Norm 2023')
     df2023 = normalized_df.loc[normalized_df['YEAR'] == '2023']
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df2023, x = 'DAP', y = 'NDVI', hue = 'GENOTYPE', style='NTREATMENT', ax=ax, legend=False)
+    plt.title('Standardize spectra 2023')
     st.pyplot(fig)
     
     # Perform interpolation
