@@ -14,7 +14,7 @@ def interpolate_spectral_indices(df):
     interpolated_dfs = []
     
     # Common DAP range to interpolate to
-    common_dap_range = range(55, 99)
+    common_dap_range = range(40, 100)
     
     for (plot_year, genotype), group in grouped:
         # Create a dataframe with the common DAP range
@@ -31,7 +31,7 @@ def interpolate_spectral_indices(df):
             
             # Linear interpolation
             f = interpolate.interp1d(sorted_data['DAP'], sorted_data[index], 
-                                     kind='linear', fill_value='extrapolate')
+                                     kind='cubic', fill_value='extrapolate')
             
             # Interpolate values for common DAP range
             interpolated_values = f(common_dap_range)
