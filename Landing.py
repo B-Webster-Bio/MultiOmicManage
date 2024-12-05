@@ -11,6 +11,7 @@ st.markdown(' * On _DataProcessing_ learn how data is processed and cleaned')
 st.markdown(md)
 
 st.title('Data Types and Description:')
+st.markdown('All data was collected by academic partners in the Thompson Lab in 2022 and 2023 from corn plots grown in High and Low Nitrogen fertilizer treatments.')
 st.subheader('1. Agronomic')
 col1, col2 = st.columns(2)
 with col1:
