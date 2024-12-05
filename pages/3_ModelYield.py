@@ -86,7 +86,7 @@ params = {
 
 # Train the XGBoost model
 evals = [(dtrain, 'train'), (dtest, 'test')]
-xgb_model = xgb.train(params, dtrain, num_boost_round=10, evals=evals, early_stopping_rounds=10)
+xgb_model = xgb.train(params, dtrain, num_boost_round=50, evals=evals, early_stopping_rounds=10)
 
 # Predict and calculate RMSE for XGBoost
 y_pred_xgb = xgb_model.predict(dtest)
@@ -101,7 +101,7 @@ important_features = [feat[0] for feat in sorted_importance]
 st.write(f"Test RMSE (XGBoost): {rmse_xgb:.4f}")
 
 # Select top 'n' features
-top_n = st.slider("Select Top n Features", min_value=1, max_value=len(important_features), value=10)
+top_n = st.slider("Select Top n Features and ReTrain", min_value=1, max_value=len(important_features), value=10)
 selected_top_features = important_features[:top_n]
 
 # Filter data based on top 'n' features
