@@ -66,11 +66,30 @@ params = {
 
 # Train the XGBoost model
 evals = [(dtrain, 'train'), (dtest, 'test')]
-xgb_model = xgb.train(params, dtrain, num_boost_round=100, evals=evals, early_stopping_rounds=10)
+xgb_model = xgb.train(params, dtrain, num_boost_round=50, evals=evals, early_stopping_rounds=10)
 
 # Predict and calculate RMSE on the test set
 y_pred = xgb_model.predict(dtest)
 rmse = mean_squared_error(y_test, y_pred, squared=False)
-print(f"Test RMSE: {rmse:.4f}")
 
-st.write(rmse)
+# Streamlit App
+st.title("XGBoost Feature Importance Visualization")
+
+# Display Test RMSE
+st.write(f"Test RMSE: {rmse:.4f}")
+
+# Function to plot and display feature importance
+def plot_and_display_importance(importance_type, title):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    xgb.plot_importance(xgb_model, importance_type=importance_type, ax=ax, title=title)
+    st.pyplot(fig)
+
+# Dropdown to select importance type
+importance_type = st.selectbox(
+    "Select Feature Importance Type",
+    ["weight", "gain", "cover"],
+    format_func=lambda x: x.capitalize()
+)
+
+# Plot and display the selected importance type
+plot_and_display_importance(importance_type, f"Feature Importance ({importance_type.capitalize()})")
