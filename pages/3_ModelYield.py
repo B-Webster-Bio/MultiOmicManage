@@ -27,10 +27,20 @@ wide_df.columns = [
 df_all = pd.merge(df_agron, wide_df, on=['PLOT_YEAR', 'YEAR', 'GENOTYPE', 'PLOT', 'NTREATMENT'])
 df_all = df_all.dropna(axis=1)
 
+st.markdown('If we flatten out the 16 Remote sensing spectra across 60 time points we have generated 16 * 60 = 960 features that can help predict yield')
 st.dataframe(df_all)
+
 y = df_all['KERNELDRYWT_PERPLANT']
 
 s1 = list(df_all.columns[6:10])
 s2 = list(df_all.columns[11:])
 all_possible_features = s1 + s2
+agron_features = all_possible_features[:6]
+st.markdown('**All possible features**')
 st.write(all_possible_features)
+
+y = df_all['KERNELDRYWT_PERPLANT'].values
+
+st.write(y)
+x = df_all[all_possible_features].values
+st.write(x)
