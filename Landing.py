@@ -4,12 +4,12 @@ st.title('Multi-omic Management for Plant Breeding :seedling:')
 md = '''The plant breeding process makes extensive use of data science techniques to identify and select useful plant germplasm. 
 In recent years there has been an explosion of the data types available to plant breeders (gen"omics" and phen"omics" to name two). The abundance of data can be helpful but also 
 hard to manage. Multi-omic Mangement aims to provide a resource that can help integrate and leverage multi-omic data in a plant breeding context.'''
-st.markdown(' * On this page learn about the different data types')
-st.markdown(" * On _DataExplorer_ investigate uni- and bi-variate relationships")
-st.markdown(" * On _RSExplore_ view how remote sensing spectra change over a growing season")
-st.markdown(' * On _FeatureEngineer_ leverage the abundance of data to predict grain yield and try your hand at feature selection')
-st.markdown(' * On _DataProcessing_ learn the nitty gritties how data is processed and cleaned')
-st.markdown(" * For more fine details check out this app's [Github](https://github.com/B-Webster-Bio/MultiOmicManage)")
+st.markdown(' * On this page learn about the different data types :scroll:')
+st.markdown(" * On _DataExplorer_ investigate uni- and bi-variate relationships :bar_chart:")
+st.markdown(" * On _RSExplore_ view how remote sensing spectra change over a growing season :camera:")
+st.markdown(' * On _FeatureEngineer_ leverage the abundance of data to predict grain yield and try your hand at feature selection :construction:')
+st.markdown(' * On _DataProcessing_ learn the nitty gritties of how data is processed and cleaned :mag:')
+st.markdown(" * For more fine details check out this app's [Github](https://github.com/B-Webster-Bio/MultiOmicManage) :shipit:")
 st.markdown(md)
 
 st.title('Data Types and Description:')

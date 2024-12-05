@@ -34,7 +34,7 @@ df_all = df_all.dropna(axis=1)
 
 st.markdown('If we flatten out the 16 Remote sensing spectra across 60 time points we have generated 16 * 60 = 960 features that can help predict yield.')
 st.markdown('Together with our 4 gas exchange traits and 2 agronomic traits we have a lot to work with.')
-st.markdown('More is not _always_ better. Try different combinations of feature sets to see which produces the lowest RMSE when predicting yield.')
+st.markdown(':dart: More is not _always_ better. Try different combinations of feature sets to see which produces the lowest RMSE when predicting yield. :dart:')
 
 s1 = list(df_all.columns[6:10])
 s2 = list(df_all.columns[11:])
