@@ -31,6 +31,6 @@ st.dataframe(df_all)
 y = df_all['KERNELDRYWT_PERPLANT']
 
 s1 = list(df_all.columns[6:10])
-s2 = list(df_all.columns[12:])
+s2 = list(df_all.columns[11:])
 all_possible_features = s1 + s2
 st.write(all_possible_features)
