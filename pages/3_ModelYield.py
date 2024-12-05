@@ -25,5 +25,10 @@ wide_df.columns = [
 ]
 
 df_all = pd.merge(df_agron, wide_df, on=['PLOT_YEAR', 'YEAR', 'GENOTYPE', 'PLOT', 'NTREATMENT'])
+df_all = df_all.dropna(axis=1)
 
 st.dataframe(df_all)
+y = df_all['KERNELDRYWT_PERPLANT']
+
+all_possible_features = df_all.columns[5:9]
+st.write(all_possible_features)
