@@ -322,11 +322,11 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     
     # Perform interpolation
     interpolated_df = interpolate_spectral_indices(normalized_df)
-
+    st.subheader('Standardized and Imputed Spectra for Modelling')
     st.dataframe(interpolated_df)
 
     #normalized_df.to_csv('Data/NormMS.csv', index = False)
 
 st.success("Saved Gas Ex and Agron data at Data/GasExAgron.csv")
 st.success("Saved MultiSpec remote sensing data at Data/MS.csv")
-st.success("Saved Normalized MultiSpec remote sensing data at Data/MS.csv")
+st.success("Saved Normalized MultiSpec remote sensing data at Data/NormMS_Interp.csv")
