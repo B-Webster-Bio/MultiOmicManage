@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title('Multi-omic Management for Plant Breeding')
+st.title('Multi-omic Management for Plant Breeding :seedling:')
 md = '''The plant breeding process makes extensive use of data science techniques to identify and select useful plant germplasm. 
 In recent years there has been an explosion of the data types available to plant breeders (gen"omics" and phen"omics" to name two). The abundance of data can be helpful but also 
 hard to manage. Multi-omic Mangement aims to provide a resource that can help integrate and leverage multi-omic data in a plant breeding context.'''
