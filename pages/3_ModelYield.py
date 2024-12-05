@@ -4,6 +4,7 @@ from scipy import interpolate
 import streamlit as st
 
 df_NormRef = pd.read_csv('Data/NormMS_Interp.csv')
+df_agron = pd.read_csv('Data/GasExAgron.csv')
 
 # List of spectral indices columns
 indices_columns = ['Blue', 'Green', 'NIR', 'Red', 'RedEdge', 'SAVIMASK', 'NDVI', 
@@ -23,4 +24,6 @@ wide_df.columns = [
     for col in wide_df.columns
 ]
 
-st.dataframe(wide_df)
+df_all = pd.merge(df_agron, df_NormRef, on=['PLOT_YEAR', 'YEAR', 'GENOTYPE', 'PLOT', 'NTREATMENT'])
+
+st.dataframe(df_all)
