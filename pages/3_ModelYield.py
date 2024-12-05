@@ -1,16 +1,14 @@
 import pandas as pd
+import numpy as np
+from scipy import interpolate
 import streamlit as st
 
 df_NormRef = pd.read_csv('Data/NormMS.csv')
 
 
-import pandas as pd
-import numpy as np
-from scipy import interpolate
-
 def interpolate_spectral_indices(df):
     # Group by PLOT_YEAR and GENOTYPE
-    grouped = df.groupby(['PLOT_YEAR'])
+    grouped = df.groupby(['PLOT_YEAR', 'GENOTYPE'])
     
     # Initialize list to store interpolated dataframes
     interpolated_dfs = []
@@ -18,7 +16,7 @@ def interpolate_spectral_indices(df):
     # Common DAP range to interpolate to
     common_dap_range = range(55, 99)
     
-    for plot_year, group in grouped:
+    for (plot_year, genotype), group in grouped:
         # Create a dataframe with the common DAP range
         interpolated_df = pd.DataFrame({'DAP': common_dap_range})
         
@@ -41,7 +39,7 @@ def interpolate_spectral_indices(df):
         
         # Add metadata columns
         interpolated_df['PLOT_YEAR'] = plot_year
-        interpolated_df['GENOTYPE'] = group['GENOTYPE'].iloc[0]
+        interpolated_df['GENOTYPE'] = genotype
         interpolated_df['YEAR'] = group['YEAR'].iloc[0]
         interpolated_df['PLOT'] = group['PLOT'].iloc[0]
         interpolated_df['NTREATMENT'] = group['NTREATMENT'].iloc[0]
