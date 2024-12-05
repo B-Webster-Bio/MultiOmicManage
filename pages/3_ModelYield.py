@@ -6,6 +6,7 @@ import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 
 df_NormRef = pd.read_csv('Data/NormMS_Interp.csv')
 df_agron = pd.read_csv('Data/GasExAgron.csv')
@@ -67,7 +68,7 @@ params = {
 
 # Train the XGBoost model
 evals = [(dtrain, 'train'), (dtest, 'test')]
-xgb_model = xgb.train(params, dtrain, num_boost_round=100, evals=evals, early_stopping_rounds=10)
+xgb_model = xgb.train(params, dtrain, num_boost_round=5, evals=evals, early_stopping_rounds=10)
 
 # Predict and calculate RMSE for XGBoost
 y_pred_xgb = xgb_model.predict(dtest)
