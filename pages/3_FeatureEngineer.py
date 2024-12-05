@@ -81,13 +81,13 @@ params = {
     'objective': 'reg:squarederror',  # Regression task
     'eval_metric': 'rmse',
     'eta': 0.11,  # Learning rate
-    'max_depth': 6,  # Depth of the trees
+    'max_depth': 5,  # Depth of the trees
     'seed': 42
 }
 
 # Train the XGBoost model
 evals = [(dtrain, 'train'), (dtest, 'test')]
-xgb_model = xgb.train(params, dtrain, num_boost_round=50, evals=evals, early_stopping_rounds=10)
+xgb_model = xgb.train(params, dtrain, num_boost_round=15, evals=evals, early_stopping_rounds=10)
 
 # Predict and calculate RMSE for XGBoost
 y_pred_xgb = xgb_model.predict(dtest)
