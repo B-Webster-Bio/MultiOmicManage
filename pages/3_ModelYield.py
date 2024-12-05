@@ -38,7 +38,7 @@ s1 = list(df_all.columns[6:10])
 s2 = list(df_all.columns[11:])
 all_possible_features = s1 + s2
 agron_features = all_possible_features[:6]
-RS_Features = 
+RS_Features = all_possible_features[7:]
 st.markdown('**All possible features**')
 st.write(all_possible_features)
 
