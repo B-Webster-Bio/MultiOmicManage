@@ -9,7 +9,7 @@ st.markdown(" * On _DataExplorer_ investigate uni- and bi-variate relationships 
 st.markdown(" * On _RSExplore_ view how remote sensing spectra change over a growing season :camera:")
 st.markdown(' * On _FeatureEngineer_ leverage the abundance of data to predict grain yield and try your hand at feature selection :construction:')
 st.markdown(' * On _DataProcessing_ learn the nitty gritties of how data is processed and cleaned :mag:')
-st.markdown(" * For more fine details check out this app's [Github](https://github.com/B-Webster-Bio/MultiOmicManage) :shipit:")
+st.markdown(" * For more fine details check out this app's [Github](https://github.com/B-Webster-Bio/MultiOmicManage)")
 st.markdown(md)
 
 st.title('Data Types and Description:')
