@@ -249,7 +249,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
             
                 # Linear interpolation
                 f = interpolate.interp1d(sorted_data['DAP'], sorted_data[index], 
-                                     kind='cubic', fill_value='extrapolate')
+                                     kind='quadratic', fill_value='extrapolate')
             
                 # Interpolate values for common DAP range
                 interpolated_values = f(common_dap_range)
@@ -289,12 +289,12 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
                 within each year.''')
     
     st.markdown('1. Standardize sampled DAP between years and extrapolate up to 100 DAP for 2022.')
-    st.markdown('I used a cubic function to better approximate the curvy shape.')
+    st.markdown('I used a quadratic function to better approximate the bell shape.')
     
     df_ref_interp = interpolate_spectral_indices(df_ref)
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df_ref_interp, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax, style='NTREATMENT', marker = 'x')
-    plt.title('Cubic Imputation and (Extrapoaltion for 2022)')
+    plt.title('Quadratic Imputation and (Extrapoaltion for 2022)')
     st.pyplot(fig)
 
     spectral_columns = ['Blue', 'Green', 'NIR', 'Red', 'RedEdge', 'SAVIMASK', 
@@ -317,10 +317,6 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.lineplot(data=df2023, x = 'DAP', y = 'NDVI', hue = 'GENOTYPE', style='NTREATMENT', ax=ax, legend=False)
     st.pyplot(fig)
-    
-    st.subheader('Interpolate common days between years')
-    st.markdown('''Finally, let's interpolate values between 40 and 100 DAP with a cubic function. 
-                 That will allow both years to be used for modelling.''')
     
     # Perform interpolation
     interpolated_df = interpolate_spectral_indices(normalized_df)
