@@ -285,7 +285,7 @@ df_RS['MTCI'] = (df_RS['NIR'] - df_RS['RedEdge']) /
     # interpolate raw data to same DAP
     df_ref_int = interpolate_spectral_indices(df_ref)
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.lineplot(data=df_ref, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax, style='NTREATMENT', marker = 'x')
+    sns.lineplot(data=df_ref_int, x = 'DAP', y = 'NDVI', hue = 'YEAR', ax=ax, style='NTREATMENT', marker = 'x')
     st.pyplot(fig)
 
 
