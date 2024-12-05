@@ -32,28 +32,29 @@ wide_df.columns = [
 df_all = pd.merge(df_agron, wide_df, on=['PLOT_YEAR', 'YEAR', 'GENOTYPE', 'PLOT', 'NTREATMENT'])
 df_all = df_all.dropna(axis=1)
 
-st.markdown('If we flatten out the 16 Remote sensing spectra across 60 time points we have generated 16 * 60 = 960 features that can help predict yield')
-st.dataframe(df_all)
+st.markdown('If we flatten out the 16 Remote sensing spectra across 60 time points we have generated 16 * 60 = 960 features that can help predict yield.')
+st.markdown('Together with our 4 gas exchange traits and 2 agronomic traits we have a lot to work with.')
+st.markdown('More is not _always_ better. Try different combinations of feature sets to see which produces the lowest RMSE when predicting yield.')
 
 s1 = list(df_all.columns[6:10])
 s2 = list(df_all.columns[11:])
 all_possible_features = s1 + s2
 agron_features = all_possible_features[:6]
+gas_ex_features = all_possible_features[:4]
+field_features = all_possible_features[4:6]
 RS_Features = all_possible_features[7:]
 st.markdown('**All possible features**')
 st.write(all_possible_features)
-
-
-st.write(df_all[all_possible_features])
-
 
 # Streamlit App
 st.title("XGBoost and Linear Regression Feature Importance and Comparison")
 
 # Feature set selection
 feature_set_options = {
-    "All Possible Features": all_possible_features,
     "Agronomic": agron_features,
+    "Agronomic": gas_ex_features,
+    'Field': field_features,
+    "All Possible Features (Be Patient)": all_possible_features,
     "RemoteSeing (Takes Long Time)": RS_Features
 }
 
@@ -79,7 +80,7 @@ dtest = xgb.DMatrix(X_test, label=y_test)
 params = {
     'objective': 'reg:squarederror',  # Regression task
     'eval_metric': 'rmse',
-    'eta': 0.1,  # Learning rate
+    'eta': 0.11,  # Learning rate
     'max_depth': 6,  # Depth of the trees
     'seed': 42
 }
@@ -138,5 +139,4 @@ st.write(
     f"Using the **{selected_feature_set_name}** feature set with the top {top_n} features:\n"
     f"- **XGBoost RMSE**: {rmse_xgb:.4f}\n"
     f"- **Linear Regression RMSE**: {rmse_lr:.4f}\n"
-    f"XGBoost is typically better for non-linear relationships, while Linear Regression excels with linear patterns."
 )
