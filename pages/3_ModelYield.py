@@ -24,6 +24,6 @@ wide_df.columns = [
     for col in wide_df.columns
 ]
 
-df_all = pd.merge(df_agron, df_NormRef, on=['PLOT_YEAR', 'YEAR', 'GENOTYPE', 'PLOT', 'NTREATMENT'])
+df_all = pd.merge(df_agron, wide_df, on=['PLOT_YEAR', 'YEAR', 'GENOTYPE', 'PLOT', 'NTREATMENT'])
 
 st.dataframe(df_all)
