@@ -39,8 +39,8 @@ agron_features = all_possible_features[:6]
 st.markdown('**All possible features**')
 st.write(all_possible_features)
 
-y = df_all['KERNELDRYWT_PERPLANT'].values
+y = df_all['KERNELDRYWT_PERPLANT']
 
 st.write(y)
-x = df_all[all_possible_features].values
+x = df_all[all_possible_features]
 st.write(x)
