@@ -12,20 +12,20 @@ df_NormRef = pd.read_csv('Data/NormMS_Interp.csv')
 df_agron = pd.read_csv('Data/GasExAgron.csv')
 
 # List of spectral indices columns
-indices_columns = ['Blue', 'Green', 'NIR', 'Red', 'RedEdge', 'SAVIMASK', 'NDVI', 
-                   'GNDVI', 'RDVI', 'NLI', 'CVI', 'MSR', 'NDI', 'NDVIRedge', 
+indices_columns = ['Blue', 'Green', 'NIR', 'Red', 'RedEdge', 'SAVIMASK', 'NDVI',
+                   'GNDVI', 'RDVI', 'NLI', 'CVI', 'MSR', 'NDI', 'NDVIRedge',
                    'PSRI', 'CIRedge', 'MTCI']
 
 # Pivot the dataframe
 wide_df = df_NormRef.pivot_table(
-    index=['PLOT_YEAR', 'YEAR', 'GENOTYPE', 'PLOT', 'NTREATMENT'], 
-    columns='DAP', 
+    index=['PLOT_YEAR', 'YEAR', 'GENOTYPE', 'PLOT', 'NTREATMENT'],
+    columns='DAP',
     values=indices_columns
 ).reset_index()
 
 # Flatten the multi-level column names
 wide_df.columns = [
-    f'{col[0]}_{col[1]}' if col[1] != '' else col[0] 
+    f'{col[0]}_{col[1]}' if col[1] != '' else col[0]
     for col in wide_df.columns
 ]
 
@@ -91,7 +91,7 @@ xgb_model = xgb.train(params, dtrain, num_boost_round=15, evals=evals, early_sto
 
 # Predict and calculate RMSE for XGBoost
 y_pred_xgb = xgb_model.predict(dtest)
-rmse_xgb = mean_squared_error(y_test, y_pred_xgb, squared=False)
+rmse_xgb = mean_squared_error(y_test, y_pred_xgb)
 
 # Extract feature importance
 importance = xgb_model.get_score(importance_type='weight')
@@ -113,7 +113,7 @@ X_test_filtered = X_test[selected_top_features]
 linear_model = LinearRegression()
 linear_model.fit(X_train_filtered, y_train)
 y_pred_lr = linear_model.predict(X_test_filtered)
-rmse_lr = mean_squared_error(y_test, y_pred_lr, squared=False)
+rmse_lr = mean_squared_error(y_test, y_pred_lr)
 
 # RMSE from Linear Regression
 st.write(f"Test RMSE (Linear Regression): {rmse_lr:.4f}")
