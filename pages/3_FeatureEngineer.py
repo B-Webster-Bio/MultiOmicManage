@@ -51,9 +51,9 @@ st.title("XGBoost and Linear Regression Feature Importance and Comparison")
 
 # Feature set selection
 feature_set_options = {
-    "Agronomic": agron_features,
+    "Agronomic: GasEx + Field)": agron_features,
     "GasEx": gas_ex_features,
-    'Field': field_features,
+    'Field: Plant Ht and Flowering': field_features,
     "All Possible Features (Be Patient)": all_possible_features,
     "RemoteSeing (Takes Long Time)": RS_Features
 }
